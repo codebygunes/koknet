@@ -32,7 +32,7 @@ pub async fn build_swarm(
         .validation_mode(gossipsub::ValidationMode::Strict)
         .message_id_fn(message_id_fn)
         .build()
-        .map_err(|msg| std::io::Error::new(std::io::ErrorKind::Other, msg))?;
+        .map_err(std::io::Error::other)?; // Clippy fix: use io_other_error
 
     let gossipsub = gossipsub::Behaviour::new(
         gossipsub::MessageAuthenticity::Signed(local_key.clone()),

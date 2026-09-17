@@ -6,7 +6,6 @@ use rand::Rng;
 /// This module masks Koknet's encrypted traffic by framing it exactly like standard
 /// TLS 1.3 Application Data (HTTPS). To an external observer or firewall,
 /// the stream is indistinguishable from standard web browsing.
-
 const TLS_1_3_APPLICATION_DATA: [u8; 3] = [0x17, 0x03, 0x03]; // ContentType: Application Data, Legacy Version: TLS 1.2
 
 pub struct DpiObfuscator;
@@ -51,8 +50,8 @@ impl DpiObfuscator {
             return Err("Packet too short to contain a valid DPI-evasion header");
         }
 
-        // Verify the fake TLS header matches
-        if &disguised_packet[0..3] != TLS_1_3_APPLICATION_DATA {
+        // Verify the fake TLS header matches (fixed Clippy op_ref warning by removing '&')
+        if disguised_packet[0..3] != TLS_1_3_APPLICATION_DATA {
             return Err("Invalid DPI-evasion header: Not TLS 1.3 format");
         }
 
