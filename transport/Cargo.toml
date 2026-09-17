@@ -1,0 +1,28 @@
+[package]
+name = "transport"
+version = "0.1.0"
+edition = "2021"
+description = "WebRTC P2P Networking, DPI-Evasion, and WASM bindings for Koknet"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+koknet_core = { path = "../core" }
+# We use libp2p as the backbone for decentralized, serverless communication
+libp2p = { version = "0.53", features = ["webrtc", "gossipsub", "identify", "noise", "yamux", "macros"] }
+futures = "0.3"
+serde = { version = "1.0", features = ["derive"] }
+rand = "0.8"
+log = "0.4"
+
+# Dependencies specifically for Native / Desktop / Mobile (Non-WASM)
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+tokio = { version = "1.32", features = ["full"] }
+libp2p = { version = "0.53", features = ["tokio"] }
+
+# Dependencies specifically for Browser / WASM compatibility
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen = "0.2"
+wasm-bindgen-futures = "0.4"
+libp2p = { version = "0.53", features = ["wasm-ext"] }
+# getrandom requires the 'js' feature to securely generate keys in the browser
+getrandom = { version = "0.2", features = ["js"] }

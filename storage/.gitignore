@@ -1,0 +1,7 @@
+# Köknet Storage - Derlenmiş dosyalar, yedekler ve yerel test veritabanları
+/target/
+**/*.rs.bk
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
