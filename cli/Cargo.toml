@@ -9,6 +9,7 @@ license = "MIT OR Apache-2.0"
 koknet_core = { path = "../core" }
 storage = { path = "../storage" }
 transport = { path = "../transport" }
+libp2p = { version = "0.53", features = ["identity", "tokio", "tcp"] }
 tokio = { version = "1.32", features = ["full"] }
 clap = { version = "4.4", features = ["derive"] }
 futures = "0.3"
