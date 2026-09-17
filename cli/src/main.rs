@@ -1,9 +1,9 @@
 use clap::{Parser, Subcommand};
+use futures::StreamExt;
+use libp2p::identity;
 use koknet_core::identity::NodeIdentity;
 use storage::db::KoknetDb;
 use transport::p2p::build_swarm;
-use libp2p::identity;
-use futures::StreamExt;
 
 #[derive(Parser)]
 #[command(name = "koknet")]
@@ -48,10 +48,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             swarm.listen_on("/ip4/0.0.0.0/tcp/0".parse()?)?;
             println!("[*] Koknet node is active and listening for peers...");
 
-            // Event loop
+            // Event loop using futures StreamExt `.next()` trait
             loop {
-                let event = swarm.select_next_some().await;
-                println!("[P2P Event]: {:?}", event);
+                if let Some(event) = swarm.next().await {
+                    println!("[P2P Event]: {:?}", event);
+                }
             }
         }
     }
