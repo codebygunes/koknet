@@ -28,6 +28,12 @@ impl SecureSession {
     }
 }
 
+impl Default for SecureSession {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 /// Encrypts CRDT payloads or arbitrary messages using ChaCha20Poly1305 (AEAD).
 /// Chosen for its high performance on mobile/edge devices and resistance to timing attacks.
 pub fn encrypt_payload(shared_secret: &SharedSecret, plaintext: &[u8]) -> Result<Vec<u8>, String> {
