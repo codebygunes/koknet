@@ -17,7 +17,7 @@ pub struct KoknetBehaviour {
 /// Initializes the decentralized P2P Swarm using WebRTC as the underlying transport.
 /// This function is asynchronous and compatible with both native (Tokio) and WASM environments.
 pub async fn build_swarm(local_key: identity::Keypair) -> Result<Swarm<KoknetBehaviour>, Box<dyn std::error::Error>> {
-    let local_peer_id = PeerId::from(local_key.public());
+    let _local_peer_id = PeerId::from(local_key.public());
 
     // Configure Gossipsub for decentralized message broadcasting
     // We implement a custom message ID function to prevent duplicate message propagation

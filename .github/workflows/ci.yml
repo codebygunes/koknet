@@ -38,8 +38,7 @@ jobs:
         run: cargo fmt --all -- --check
         
       - name: Run Clippy (Linter & Memory Safety Check)
-        # -D warnings ensures the pipeline fails if there is even a single warning
         run: cargo clippy --all-targets --all-features -- -D warnings
 
-      - name: Run Hostile Environment Unit & Integration Tests
+      - name: Run All Workspace Tests (Core, Storage, Transport, CLI)
         run: cargo test --workspace --all-features --verbose

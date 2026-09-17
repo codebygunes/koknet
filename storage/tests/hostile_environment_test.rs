@@ -3,21 +3,24 @@ use koknet_core::identity::NodeIdentity;
 use storage::crdt::CrdtRecord;
 use storage::db::KoknetDb;
 use std::fs;
-use std::time::Duration;
 
 #[test]
 fn test_hostile_environment_and_crdt_resolution() {
     // 1. Setup: Node Identities
     let alice = NodeIdentity::generate();
-    let bob = NodeIdentity::generate();
+    let _bob = NodeIdentity::generate(); // Unused variable warning fixed with '_'
     let eve = NodeIdentity::generate(); // The Attacker
 
     // 2. Setup: E2EE Session between Alice and Bob
     let alice_session = SecureSession::new();
     let bob_session = SecureSession::new();
     
-    let alice_shared_secret = alice_session.derive_shared_secret(&bob_session.public_key());
-    let bob_shared_secret = bob_session.derive_shared_secret(&alice_session.public_key());
+    // Save public keys before consumption to respect Rust ownership rules
+    let alice_pub = alice_session.public_key();
+    let bob_pub = bob_session.public_key();
+
+    let alice_shared_secret = alice_session.derive_shared_secret(&bob_pub);
+    let bob_shared_secret = bob_session.derive_shared_secret(&alice_pub);
 
     // 3. Setup: Local Databases for Alice and Bob
     let alice_db_path = "alice_test_db.sqlite";
