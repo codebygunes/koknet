@@ -21,7 +21,7 @@ impl NodeIdentity {
         self.signing_key.verifying_key()
     }
 
-    /// Signs CRDT records or P2P messages to guarantee data integrity and author authenticity 
+    /// Signs CRDT records or P2P messages to guarantee data integrity and author authenticity
     /// against tampering in hostile network environments.
     pub fn sign(&self, message: &[u8]) -> Signature {
         self.signing_key.sign(message)

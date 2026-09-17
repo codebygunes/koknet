@@ -13,7 +13,7 @@ pub struct CrdtRecord {
     /// The actual data content (payload), which should be encrypted via `koknet_core` prior to network transit.
     pub payload: Vec<u8>,
     /// Ed25519 signature ensuring the record's integrity and non-repudiation.
-    pub signature: Vec<u8>, 
+    pub signature: Vec<u8>,
 }
 
 impl CrdtRecord {

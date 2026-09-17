@@ -44,7 +44,7 @@ fn test_perfect_forward_secrecy_isolation() {
     // Bob accidentally or maliciously tries to decrypt a packet from the old session
     // using the newly rotated session key.
     let attempt = decrypt_payload(&bob_secret_2, &cipher_1);
-    
+
     assert!(
         attempt.is_err(),
         "PFS Breach: Old messages must NOT be readable with new session keys!"

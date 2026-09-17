@@ -1,7 +1,7 @@
 use clap::{Parser, Subcommand};
 use futures::StreamExt;
-use libp2p::identity;
 use koknet_core::identity::NodeIdentity;
+use libp2p::identity;
 use storage::db::KoknetDb;
 use transport::p2p::build_swarm;
 

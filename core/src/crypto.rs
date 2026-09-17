@@ -5,7 +5,7 @@ use chacha20poly1305::{
 use rand::{rngs::OsRng, RngCore};
 use x25519_dalek::{EphemeralSecret, PublicKey, SharedSecret};
 
-/// Handles Diffie-Hellman key exchange to establish secure, End-to-End Encrypted (E2EE) 
+/// Handles Diffie-Hellman key exchange to establish secure, End-to-End Encrypted (E2EE)
 /// communication sessions between peers, ensuring perfect forward secrecy.
 pub struct SecureSession {
     secret: EphemeralSecret,
@@ -32,7 +32,7 @@ impl SecureSession {
 /// Chosen for its high performance on mobile/edge devices and resistance to timing attacks.
 pub fn encrypt_payload(shared_secret: &SharedSecret, plaintext: &[u8]) -> Result<Vec<u8>, String> {
     let cipher = ChaCha20Poly1305::new(shared_secret.as_bytes().into());
-    
+
     // Generate a secure 12-byte random nonce for AEAD encryption
     let mut nonce_bytes = [0u8; 12];
     OsRng.fill_bytes(&mut nonce_bytes);
@@ -45,17 +45,20 @@ pub fn encrypt_payload(shared_secret: &SharedSecret, plaintext: &[u8]) -> Result
     // Prepend the nonce to the ciphertext (required for decryption)
     let mut result = nonce_bytes.to_vec();
     result.append(&mut ciphertext);
-    
+
     Ok(result)
 }
 
 /// Decrypts incoming encrypted CRDT packets and verifies their integrity (MAC verification).
 /// Prevents chosen-ciphertext attacks and ensures data hasn't been tampered with by middleboxes (e.g., DPI).
-pub fn decrypt_payload(shared_secret: &SharedSecret, encrypted_data: &[u8]) -> Result<Vec<u8>, String> {
+pub fn decrypt_payload(
+    shared_secret: &SharedSecret,
+    encrypted_data: &[u8],
+) -> Result<Vec<u8>, String> {
     if encrypted_data.len() < 12 {
         return Err("Invalid data length: missing nonce".into());
     }
-    
+
     let cipher = ChaCha20Poly1305::new(shared_secret.as_bytes().into());
     let nonce = Nonce::from_slice(&encrypted_data[0..12]);
     let ciphertext = &encrypted_data[12..];

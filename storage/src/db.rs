@@ -33,8 +33,8 @@ impl KoknetDb {
 
     /// CRDT Merge Logic (Conflict-free Resolution):
     /// Attempts to insert or update a record in the local database.
-    /// If the ID already exists, it compares timestamps. If the incoming record's timestamp 
-    /// is newer (greater), it overwrites the local data (LWW paradigm). 
+    /// If the ID already exists, it compares timestamps. If the incoming record's timestamp
+    /// is newer (greater), it overwrites the local data (LWW paradigm).
     /// If older, the incoming data is ignored. This process operates autonomously without central coordination.
     pub fn merge_crdt_record(&self, record: &CrdtRecord) -> Result<bool> {
         // Retrieve the current timestamp of the associated record, if it exists
@@ -75,10 +75,10 @@ impl KoknetDb {
 
     /// Exports all local records. Used when establishing a new P2P connection to synchronize state with peers.
     pub fn get_all_records(&self) -> Result<Vec<CrdtRecord>> {
-        let mut stmt = self.conn.prepare(
-            "SELECT id, author_id, timestamp, payload, signature FROM crdt_store"
-        )?;
-        
+        let mut stmt = self
+            .conn
+            .prepare("SELECT id, author_id, timestamp, payload, signature FROM crdt_store")?;
+
         let record_iter = stmt.query_map([], |row| {
             Ok(CrdtRecord {
                 id: row.get(0)?,
@@ -93,7 +93,7 @@ impl KoknetDb {
         for record in record_iter {
             records.push(record?);
         }
-        
+
         Ok(records)
     }
 }
